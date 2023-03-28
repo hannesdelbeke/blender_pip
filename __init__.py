@@ -1,5 +1,5 @@
 bl_info = {
-    "name": "Python Module Manager",
+    "name": "Python Module Manager (PIP)",
     "author": "ambi",
     "version": (1, 0, 6),
     "blender": (2, 80, 0),
