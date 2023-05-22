@@ -1,5 +1,6 @@
+
 bl_info = {
-    "name": "Python Module Manager",
+    "name": "Python Module Manager (PIP)",
     "author": "ambi",
     "version": (1, 0, 6),
     "blender": (2, 80, 0),
@@ -14,13 +15,13 @@ bl_info = {
 
 __version__ = ".".join(map(str, bl_info["version"]))
 
+
 import sys
 import subprocess
 import bpy
 from pathlib import Path
 import os
 
-MODULES_FOLDER = Path(bpy.utils.user_resource("SCRIPTS")) / "modules"
 
 if bpy.app.version < (2, 91, 0):
     python_bin = bpy.app.binary_path_python
@@ -100,12 +101,12 @@ class PMM_OT_PIPInstall(bpy.types.Operator):
     bl_description = "Install PIP packages"
 
     def execute(self, context):
-        chosen_path = "--user" if bpy.context.scene.pip_user_flag else None
         run_pip_command(
             self,
             "install",
             *bpy.context.scene.pip_module_name.split(" "),
-            chosen_path,
+            "--target",
+            Path(bpy.utils.script_path_user()) / "addons/modules",
         )
         return {"FINISHED"}
 
@@ -169,9 +170,6 @@ class PMM_AddonPreferences(bpy.types.AddonPreferences):
     def draw(self, context):
         layout = self.layout
         row = layout.row()
-        row.prop(bpy.context.scene, "pip_user_flag", text="As local user")
-        # TODO: implement storing Python modules into Blender module home
-        # row.prop(bpy.context.scene, "pip_modules_home", text="Use Blender modules location")
 
         row = layout.row()
         row.operator(PMM_OT_EnsurePIP.bl_idname, text="Ensure PIP")
@@ -227,7 +225,6 @@ def register():
         bpy.utils.register_class(c)
 
     bpy.types.Scene.pip_modules_home = bpy.props.BoolProperty(default=False)
-    bpy.types.Scene.pip_user_flag = bpy.props.BoolProperty(default=True)
     bpy.types.Scene.pip_advanced_toggle = bpy.props.BoolProperty(default=False)
     bpy.types.Scene.pip_module_name = bpy.props.StringProperty()
 
@@ -237,6 +234,5 @@ def unregister():
         bpy.utils.unregister_class(c)
 
     del bpy.types.Scene.pip_modules_home
-    del bpy.types.Scene.pip_user_flag
     del bpy.types.Scene.pip_advanced_toggle
     del bpy.types.Scene.pip_module_name
