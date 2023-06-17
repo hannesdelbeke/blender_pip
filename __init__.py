@@ -15,12 +15,12 @@ bl_info = {
 
 __version__ = ".".join(map(str, bl_info["version"]))
 
-# venv notice:
-# https://stackoverflow.com/questions/33412974/how-to-uninstall-a-package-installed-with-pip-install-user
+#   how-to-uninstall-a-package-installed-with-pip-install-user/56948334#56948334
 import sys
 import subprocess
 import bpy
 from pathlib import Path
+import os
 
 
 if bpy.app.version < (2, 91, 0):
@@ -38,6 +38,14 @@ def run_pip_command(self, *cmds, cols=False, run_module="pip"):
     global TEXT_OUTPUT
 
     cmds = [c for c in cmds if c is not None]
+    
+    # copy the sys.paths to PYTHONPATH to pass to subprocess, for pip to use
+    paths = os.environ.get("PYTHONPATH", "").split(os.pathsep)
+    new_paths = [p for p in sys.path if p not in paths]
+    paths += new_paths
+    joined_paths = os.pathsep.join(paths)
+    if joined_paths:
+        os.environ["PYTHONPATH"] = joined_paths
 
     # TODO: make this function only run pip commands, make separate function to run other modules
     # Choose where to save Python modules
