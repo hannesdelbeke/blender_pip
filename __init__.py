@@ -117,6 +117,22 @@ def save_text(text, cols=False):
     return out
 
 
+class PMM_OT_PIPCommand(bpy.types.Operator):
+    bl_idname = "pmm.pip_command"
+    bl_label = "Run a pip command"
+    bl_description = "run a pip command"
+
+    def execute(self, context):
+        target_path = Path(python_bin).parent.parent / "lib" / "site-packages"
+        run_pip_command(
+            self,
+            *bpy.context.scene.pip_module_name.split(" "),
+            "--target",
+            str(target_path),
+        )
+        return {"FINISHED"}
+
+
 class PMM_OT_PIPInstall(bpy.types.Operator):
     bl_idname = "pmm.pip_install"
     bl_label = "Install packages"
@@ -210,6 +226,7 @@ class PMM_AddonPreferences(bpy.types.AddonPreferences):
         row.prop(bpy.context.scene, "pip_module_name", text="Module name(s)")
         row.operator(PMM_OT_PIPInstall.bl_idname, text="Install")
         row.operator(PMM_OT_PIPRemove.bl_idname, text="Remove")
+        row.operator(PMM_OT_PIPCommand.bl_idname, text="Command")
 
         if TEXT_OUTPUT != []:
             row = layout.row(align=True)
@@ -247,6 +264,7 @@ classes = (
     PMM_OT_PIPInstall,
     PMM_OT_PIPRemove,
     PMM_OT_ClearText,
+    PMM_OT_PIPCommand,
 )
 
 
