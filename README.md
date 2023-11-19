@@ -1,6 +1,6 @@
 # <img src="https://raw.githubusercontent.com/tandpfun/skill-icons/59059d9d1a2c092696dc66e00931cc1181a4ce1f/icons/Blender-Dark.svg" width="32" style="max-width: 100%;"> Blender pip: Python module manager
 
-⚠️ This repo has evolved, for a more advanced PIP installer, see https://github.com/hannesdelbeke/pip-qt-addon/ 🚀
+⚠️ This repo evolved in a more advanced PIP installer, see [pip-qt-addon](https://github.com/hannesdelbeke/pip-qt-addon/) 🚀
 
 ---
 
