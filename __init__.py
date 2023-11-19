@@ -1,7 +1,7 @@
 bl_info = {
     "name": "Python Module Manager (PIP)",
     "author": "ambi",
-    "version": (1, 0, 6),
+    "version": (1, 0, 7),
     "blender": (2, 80, 0),
     "location": "Here",
     "description": "Manage Python modules inside Blender with PIP",
