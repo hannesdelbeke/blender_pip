@@ -134,7 +134,7 @@ class PMM_OT_PIPCommand(bpy.types.Operator):
         target_path = Path(python_bin).parent.parent / "lib" / "site-packages"
         run_pip_command(
             self,
-            *bpy.context.scene.pip_module_name.split(" "),
+            *bpy.context.scene.pip_module_name.split(" "),  # todo this might break with spaces in folder names
             "--target",
             str(target_path),
         )
@@ -148,7 +148,7 @@ class PMM_OT_PIPInstall(bpy.types.Operator):
 
     def execute(self, context):
         user_scripts_path = Path(bpy.utils.script_path_user())
-        args = bpy.context.scene.pip_module_name.split(" ")
+        args = bpy.context.scene.pip_module_name.split(" ")  # todo this might break with spaces in folder names
         modules_path = user_scripts_path / "addons/modules"
         startup_path = user_scripts_path / "startup"
 
@@ -172,7 +172,7 @@ class PMM_OT_PIPRemove(bpy.types.Operator):
     bl_description = "Remove PIP packages"
 
     def execute(self, context):
-        args = bpy.context.scene.pip_module_name.split(" ")
+        args = bpy.context.scene.pip_module_name.split(" ")   # todo this might break with spaces in folder names
         run_pip_command(self, "uninstall", *args, "-y")
         return {"FINISHED"}
 
